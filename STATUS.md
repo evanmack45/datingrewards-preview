@@ -4,6 +4,14 @@
 - Repo: https://github.com/evanmack45/datingrewards-preview (Pages from main /docs, cname null)
 - State: noindex GitHub Pages preview. Not on the custom domain. No DNS, Afternic or registrar change.
 
+## r4 art wired (local), 2026-11-25 10:45 AM CT
+
+A how-it-works strip (1024×341, srcset 512/1024, lazy) sits under `#about-h` and above the three about paragraphs.
+
+- Local e2e (qa/e2e.mjs): **ALL PASS (127)**, including the strip dimensions and lazy srcset on the no-JS about section.
+- Local gate (qa/local-r4/): Lighthouse **99 / 100 / 100 / SEO 66**, CLS 0.001, LCP 2.2 s. Impeccable findings match r3: 1 at 390 and 1280 (advisory hard-offset shadow on the hero, intentional), 2 static (that shadow plus a pre-existing img with no src on a JS-filled badge). Folds viewed; the strip lives in How it works, below the first screen.
+- Live e2e / live folds: pending Pages. noindex kept; no DNS or go-live.
+
 ## Share footer canonical URL, 2026-11-25 8:20 AM CT
 
 The share-card footer and Copy-link URL no longer use `location.host` / `location.origin` on localhost, 127.0.0.1, or file: URLs. They fall back to a CANONICAL constant (`https://evanmack45.github.io/datingrewards-preview/`, to become `https://datingrewards.com/` at go-live). On the preview host they still use `location.origin` plus pathname. e2e asserts the footer text and the copied link never contain `localhost` or `127.0.0.1`, including when the suite runs on the dev server. Dev-server e2e: ALL PASS (114). Share PNGs were regenerated against the live preview.

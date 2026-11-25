@@ -92,6 +92,8 @@ h1 { font: 400 clamp(44px, 12.5vw, 112px)/.92 var(--display); margin: 6px 0 26px
 
 .about { max-width: 1180px; margin: 0 auto; padding: 36px 20px 20px; border-top: 2px solid rgba(255,246,230,.25); }
 .about h2 { font: 400 clamp(32px, 7vw, 48px)/1 var(--display); margin: 0 0 14px; }
+.how-art { margin: 0 0 18px; max-width: 1024px; }
+.how-art img { display: block; width: 100%; height: auto; aspect-ratio: 1024 / 341; }
 .about p { max-width: 38em; margin: 0 0 14px; }
 .all summary { cursor: pointer; font-weight: 700; padding: 12px 0; }
 .all ul { columns: 2 220px; margin: 6px 0 0; padding-left: 20px; }
