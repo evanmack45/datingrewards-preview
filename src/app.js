@@ -8,7 +8,13 @@ let seed = Number($('#play').dataset.seed), marks = withFree(0), lastLines = 0;
 
 const randomSeed = () => { const a = new Uint32Array(1); do crypto.getRandomValues(a); while (a[0] < 1 || a[0] > MAX_SEED); return a[0]; };
 const textAt = (order, p) => (p === FREE ? data.free : data.pool[order[p < FREE ? p : p - 1]]);
-const linkFor = () => `${location.origin}${location.pathname}#${encode(seed, marks)}`;
+// Switch to https://datingrewards.com/ at go-live.
+const CANONICAL = 'https://evanmack45.github.io/datingrewards-preview/';
+const isLocalPage = () => location.protocol === 'file:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+const publicPage = () => (isLocalPage() ? CANONICAL : `${location.origin}${location.pathname}`).replace(/index\.html$/, '').replace(/\/?$/, '/');
+const publicLink = (hash) => `${publicPage()}${hash.startsWith('#') ? hash : '#' + hash}`;
+const publicFooter = (hash) => publicLink(hash).replace(/^https?:\/\//, '');
+const linkFor = () => publicLink(`#${encode(seed, marks)}`);
 const say = (t) => { $('#msg').textContent = t; };
 
 function render({ celebrate = false } = {}) {
@@ -167,7 +173,7 @@ async function drawCard() {
   }
   g.textAlign = 'left';
   g.font = '500 24px Figtree'; g.fillStyle = 'rgba(255,246,230,.85)';
-  g.fillText(`Joke badge, no real prize. Generic tropes, no real people. ${location.host}${location.pathname}#${encode(seed, marks)}`, 54, H - 40);
+  g.fillText(`Joke badge, no real prize. Generic tropes, no real people. ${publicFooter('#' + encode(seed, marks))}`, 54, H - 40);
   return new Promise((res) => cv.toBlob(res, 'image/png'));
 }
 $('#save').addEventListener('click', async () => {

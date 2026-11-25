@@ -4,6 +4,10 @@
 - Repo: https://github.com/evanmack45/datingrewards-preview (Pages from main /docs, cname null)
 - State: noindex GitHub Pages preview. Not on the custom domain. No DNS, Afternic or registrar change.
 
+## Share footer canonical URL, 2026-11-25 8:20 AM CT
+
+The share-card footer and Copy-link URL no longer use `location.host` / `location.origin` on localhost, 127.0.0.1, or file: URLs. They fall back to a CANONICAL constant (`https://evanmack45.github.io/datingrewards-preview/`, to become `https://datingrewards.com/` at go-live). On the preview host they still use `location.origin` plus pathname. e2e asserts the footer text and the copied link never contain `localhost` or `127.0.0.1`, including when the suite runs on the dev server. Dev-server e2e: ALL PASS (114). Share PNGs were regenerated against the live preview.
+
 ## Round-2 art, 2026-11-25 8:13 AM CT
 
 Wired Dash r2 art from art/incoming/r2 (manifest caveats honored; Fal not used).
