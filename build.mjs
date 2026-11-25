@@ -60,7 +60,7 @@ const html = `<!doctype html>
     </div>
   </div>
   <div class="side">
-    <p class="status" id="status" aria-live="polite">Tap every square that has happened to you.</p>
+    <p class="status" id="status" aria-live="polite">Nothing marked yet. The free square is on the house.</p>
     <div class="reward" id="reward" data-impeccable-ignore="hard-offset-shadow" hidden>
       <p class="r-kicker">Bingo! Reward unlocked</p>
       <p class="r-title" id="r-title"></p>

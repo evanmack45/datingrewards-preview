@@ -30,7 +30,7 @@ function render({ celebrate = false } = {}) {
   const status = $('#status');
   if (k === 0) {
     const c = closest(marks);
-    status.textContent = n === 0 ? 'Tap every square that has happened to you.' : `${n} marked. ${c.need} more in the ${lineName(c.line)} for bingo.`;
+    status.textContent = n === 0 ? 'Nothing marked yet. The free square is on the house.' : `${n} marked. ${c.need} more in the ${lineName(c.line)} for bingo.`;
   } else if (n === CELLS - 1) status.textContent = 'Blackout. You have seen it all.';
   else status.textContent = `Bingo! ${k} ${k === 1 ? 'line' : 'lines'} so far.`;
   const r = reward(data.rewards, n === CELLS - 1 ? 12 : k);
