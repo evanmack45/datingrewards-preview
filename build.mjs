@@ -35,7 +35,10 @@ const html = `<!doctype html>
 <meta name="description" content="A fresh bingo card of dating-app clichés. Tap what has happened to you, get five in a row, save the card.">
 <meta property="og:title" content="Dating App Bingo">
 <meta property="og:description" content="Tap what has happened to you. Five in a row earns a joke badge, not a real prize.">
-<meta property="og:image" content="${SITE}og.png">
+<meta property="og:image" content="${SITE}og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A five-by-five grid of empty rounded squares in pink, lime and yellow with some daubed, a big star in the centre square and a bingo dauber.">
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#1f3fd0">
 <link rel="preload" href="fonts/bagel.woff2" as="font" type="font/woff2" crossorigin>
@@ -99,7 +102,10 @@ const html = `<!doctype html>
 rmSync(out, { recursive: true, force: true });
 mkdirSync(join(out, 'fonts'), { recursive: true });
 writeFileSync(join(out, 'index.html'), html);
-for (const f of ['style.css', 'app.js', 'logic.js', 'og.png']) { try { copyFileSync(join(here, 'src', f), join(out, f)); } catch (e) { if (f !== 'og.png') throw e; } }
+for (const f of ['style.css', 'app.js', 'logic.js']) copyFileSync(join(here, 'src', f), join(out, f));
+mkdirSync(join(out, 'img'), { recursive: true });
+for (const f of readdirSync(join(here, 'src/img'))) copyFileSync(join(here, 'src/img', f), join(out, 'img', f));
+copyFileSync(join(here, 'src/img/og.jpg'), join(out, 'og.jpg'));
 for (const f of readdirSync(join(here, 'src/fonts'))) copyFileSync(join(here, 'src/fonts', f), join(out, 'fonts', f));
 writeFileSync(join(out, 'robots.txt'), 'User-agent: *\nDisallow: /\n');
 writeFileSync(join(out, '.nojekyll'), '');

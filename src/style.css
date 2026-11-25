@@ -98,3 +98,13 @@ h1 { font: 400 clamp(44px, 12.5vw, 112px)/.92 var(--display); margin: 6px 0 26px
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+
+/* === generated art === */
+.intro { display: grid; gap: 16px; }
+.intro-art { width: 100%; height: auto; max-height: 220px; object-fit: cover; object-position: center 40%; display: block; }
+.trophies { display: block; width: min(480px, 100%); height: auto; margin: 0 0 16px; }
+@media (min-width: 960px) {
+  .intro { grid-template-columns: 1fr; }
+  .intro-art { max-height: 280px; }
+}
+
