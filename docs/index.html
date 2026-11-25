@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Dating App Bingo</title>
+<meta name="description" content="A fresh bingo card of dating-app clichés. Tap what has happened to you, get five in a row, save the card.">
+<meta property="og:title" content="Dating App Bingo">
+<meta property="og:description" content="Tap what has happened to you. Five in a row wins a (joke) reward.">
+<meta property="og:image" content="https://evanmack45.github.io/datingrewards-preview/og.png">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#1f3fd0">
+<link rel="preload" href="fonts/bagel.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/figtree.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%23ff3d7f'/%3E%3C/svg%3E">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="./">Dating Rewards</a>
+  <a class="toplink" href="#about">How it works</a>
+</header>
+<main class="play" id="play" data-seed="20261125">
+  <div class="intro">
+    <h1>Dating App Bingo</h1>
+    <p class="lede">Tap every square that has happened to you on the apps. Five in a row wins a reward.</p>
+  </div>
+  <div class="card" id="card">
+    <div class="letters" aria-hidden="true"><span>S</span><span>W</span><span>I</span><span>P</span><span>E</span><p class="stamp" id="stamp">Bingo!</p></div>
+    <div class="cells" id="cells" role="group" aria-label="Bingo card, 25 squares">
+      <button type="button" class="cell" data-i="0" aria-pressed="false"><span class="tx">Photo with a guitar</span></button>
+      <button type="button" class="cell" data-i="1" aria-pressed="false"><span class="tx">“Let’s grab a drink sometime”</span></button>
+      <button type="button" class="cell" data-i="2" aria-pressed="false"><span class="tx">The dog is the main character</span></button>
+      <button type="button" class="cell" data-i="3" aria-pressed="false"><span class="tx">Prompt answer is “ask me”</span></button>
+      <button type="button" class="cell" data-i="4" aria-pressed="false"><span class="tx">“Will steal your fries”</span></button>
+      <button type="button" class="cell" data-i="5" aria-pressed="false"><span class="tx">Boat photo, not their boat</span></button>
+      <button type="button" class="cell" data-i="6" aria-pressed="false"><span class="tx">Opened with a voice note</span></button>
+      <button type="button" class="cell" data-i="7" aria-pressed="false"><span class="tx">Saw a coworker</span></button>
+      <button type="button" class="cell" data-i="8" aria-pressed="false"><span class="tx">Mountain summit photo</span></button>
+      <button type="button" class="cell" data-i="9" aria-pressed="false"><span class="tx">Matched, never said a word</span></button>
+      <button type="button" class="cell" data-i="10" aria-pressed="false"><span class="tx">Blurry photo from 2016</span></button>
+      <button type="button" class="cell" data-i="11" aria-pressed="false"><span class="tx">Ghosted after “haha”</span></button>
+      <button type="button" class="cell free is-on" data-i="12" aria-pressed="true" disabled><span class="ft">Free</span><span class="tx">Back on the apps</span></button>
+      <button type="button" class="cell" data-i="13" aria-pressed="false"><span class="tx">Two truths and a lie</span></button>
+      <button type="button" class="cell" data-i="14" aria-pressed="false"><span class="tx">“Work hard, play hard”</span></button>
+      <button type="button" class="cell" data-i="15" aria-pressed="false"><span class="tx">Pineapple pizza debate</span></button>
+      <button type="button" class="cell" data-i="16" aria-pressed="false"><span class="tx">Daily “gm” texts, then gone</span></button>
+      <button type="button" class="cell" data-i="17" aria-pressed="false"><span class="tx">“Not mine, my niece”</span></button>
+      <button type="button" class="cell" data-i="18" aria-pressed="false"><span class="tx">Costume party photo</span></button>
+      <button type="button" class="cell" data-i="19" aria-pressed="false"><span class="tx">Opened with a pun</span></button>
+      <button type="button" class="cell" data-i="20" aria-pressed="false"><span class="tx">Quotes a sitcom</span></button>
+      <button type="button" class="cell" data-i="21" aria-pressed="false"><span class="tx">Saw your ex</span></button>
+      <button type="button" class="cell" data-i="22" aria-pressed="false"><span class="tx">A friend wrote the bio</span></button>
+      <button type="button" class="cell" data-i="23" aria-pressed="false"><span class="tx">Date rescheduled twice</span></button>
+      <button type="button" class="cell" data-i="24" aria-pressed="false"><span class="tx">Whole chat is “hey”</span></button>
+    </div>
+  </div>
+  <div class="side">
+    <p class="status" id="status" aria-live="polite">Tap every square that has happened to you.</p>
+    <div class="reward" id="reward" hidden>
+      <p class="r-kicker">Bingo! Reward unlocked</p>
+      <p class="r-title" id="r-title"></p>
+      <p class="r-prize" id="r-prize"></p>
+      <p class="r-small">Rewards are jokes. There are no real prizes.</p>
+    </div>
+    <div class="actions">
+      <button type="button" class="btn hot" id="save">Save card image</button>
+      <button type="button" class="btn" id="copy">Copy link</button>
+      <button type="button" class="btn ghost" id="new">New card</button>
+    </div>
+    <p class="msg" id="msg" aria-live="polite"></p>
+    <noscript><p class="msg">Marking squares needs JavaScript. Here is today's card to read.</p></noscript>
+  </div>
+</main>
+<section class="about" id="about" aria-labelledby="about-h">
+  <h2 id="about-h">How it works</h2>
+  <p>Every card is 24 squares picked at random from 60 generic dating-app clichés, plus a free square in the middle. Mark a full row, column or diagonal for bingo. Mark all 25 for a blackout.</p>
+  <p>Nothing you tap leaves your browser. There are no accounts, cookies or trackers. Your marks live in this page and in the link, but only if you copy it and send it yourself. The link holds the card number and which squares are marked, nothing else.</p>
+  <p>The squares are made-up tropes, not real people or real profiles. This is a joke game for adults who use dating apps, so it is 18+.</p>
+  <details class="all">
+    <summary>See all 60 squares</summary>
+    <ul><li>Holding a fish</li><li>Photo with a tiger</li><li>Group photo, which one?</li><li>Sunglasses in every photo</li><li>Wants a “partner in crime”</li><li>Bio is one emoji</li><li>Ghosted after “haha”</li><li>Matched, never said a word</li><li>Whole chat is “hey”</li><li>Two truths and a lie</li><li>Mountain summit photo</li><li>“Not mine, my niece”</li><li>Car selfie</li><li>Gym mirror selfie</li><li>“Fluent in sarcasm”</li><li>Wedding guest photo</li><li>Lists their personality type</li><li>“Work hard, play hard”</li><li>The dog is the main character</li><li>Pineapple pizza debate</li><li>“What are you looking for?”</li><li>Asked for your number, fast</li><li>Date rescheduled twice</li><li>Plane wing photo</li><li>Festival face paint</li><li>Only pet photos</li><li>Blurry photo from 2016</li><li>Asked for your star sign</li><li>Quotes a sitcom</li><li>Prompt answer is “ask me”</li><li>Opened with a voice note</li><li>Unmatched mid-chat</li><li>Same person on another app</li><li>Bio longer than this card</li><li>“Will steal your fries”</li><li>Height in the first line</li><li>Saw a coworker</li><li>Saw your ex</li><li>Ran out of likes</li><li>Paid for a boost. Nothing.</li><li>Coffee walk first date</li><li>Date ran 15 minutes late</li><li>Chatted for weeks, never met</li><li>“Let’s grab a drink sometime”</li><li>Photo with a guitar</li><li>Brunch photo</li><li>A friend wrote the bio</li><li>Hiking boots in every photo</li><li>Strong opinion about tacos</li><li>Matched at 2 AM</li><li>Daily “gm” texts, then gone</li><li>Self-described adventurer</li><li>Costume party photo</li><li>“Let’s skip the small talk”</li><li>Opened with a pun</li><li>Boat photo, not their boat</li><li>Photo of their dinner</li><li>“Good time, not a long time”</li><li>Bio is a list of foods</li><li>Matched with a classmate</li></ul>
+  </details>
+</section>
+<footer class="foot">
+  <p>Dating Rewards is a joke game for adults, 18+. Not linked to any dating app.</p>
+  <p><a href="https://www.afternic.com/domain/datingrewards.com">This domain is for sale.</a></p>
+</footer>
+<script type="application/json" id="squares">{"free":"Back on the apps","pool":["Holding a fish","Photo with a tiger","Group photo, which one?","Sunglasses in every photo","Wants a “partner in crime”","Bio is one emoji","Ghosted after “haha”","Matched, never said a word","Whole chat is “hey”","Two truths and a lie","Mountain summit photo","“Not mine, my niece”","Car selfie","Gym mirror selfie","“Fluent in sarcasm”","Wedding guest photo","Lists their personality type","“Work hard, play hard”","The dog is the main character","Pineapple pizza debate","“What are you looking for?”","Asked for your number, fast","Date rescheduled twice","Plane wing photo","Festival face paint","Only pet photos","Blurry photo from 2016","Asked for your star sign","Quotes a sitcom","Prompt answer is “ask me”","Opened with a voice note","Unmatched mid-chat","Same person on another app","Bio longer than this card","“Will steal your fries”","Height in the first line","Saw a coworker","Saw your ex","Ran out of likes","Paid for a boost. Nothing.","Coffee walk first date","Date ran 15 minutes late","Chatted for weeks, never met","“Let’s grab a drink sometime”","Photo with a guitar","Brunch photo","A friend wrote the bio","Hiking boots in every photo","Strong opinion about tacos","Matched at 2 AM","Daily “gm” texts, then gone","Self-described adventurer","Costume party photo","“Let’s skip the small talk”","Opened with a pun","Boat photo, not their boat","Photo of their dinner","“Good time, not a long time”","Bio is a list of foods","Matched with a classmate"],"rewards":[{"lines":1,"title":"Bronze Swiper","prize":"One guilt-free evening with the app deleted."},{"lines":2,"title":"Silver Swiper","prize":"A friend has to listen to the whole story. No phones out."},{"lines":3,"title":"Gold Swiper","prize":"The right to say “I’ve seen it all” at brunch."},{"lines":12,"title":"Blackout","prize":"Lifetime membership in the Seen It All Club. Dues waived."}]}</script>
+<script type="module" src="app.js"></script>
+</body>
+</html>
