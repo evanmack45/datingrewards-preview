@@ -34,7 +34,7 @@ const html = `<!doctype html>
 <title>Dating App Bingo</title>
 <meta name="description" content="A fresh bingo card of dating-app clichés. Tap what has happened to you, get five in a row, save the card.">
 <meta property="og:title" content="Dating App Bingo">
-<meta property="og:description" content="Tap what has happened to you. Five in a row wins a (joke) reward.">
+<meta property="og:description" content="Tap what has happened to you. Five in a row earns a joke badge, not a real prize.">
 <meta property="og:image" content="${SITE}og.png">
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#1f3fd0">
@@ -51,7 +51,7 @@ const html = `<!doctype html>
 <main class="play" id="play" data-seed="${DEFAULT_SEED}">
   <div class="intro">
     <h1>Dating App Bingo</h1>
-    <p class="lede">Tap every square that has happened to you on the apps. Five in a row wins a reward.</p>
+    <p class="lede">Tap every square that has happened to you on the apps. Five in a row earns a joke badge for your card. It is never a real prize.</p>
   </div>
   <div class="card" id="card" data-impeccable-ignore="hard-offset-shadow">
     <div class="letters" aria-hidden="true"><span>S</span><span>W</span><span>I</span><span>P</span><span>E</span><p class="stamp" id="stamp">Bingo!</p></div>
@@ -62,10 +62,10 @@ const html = `<!doctype html>
   <div class="side">
     <p class="status" id="status" aria-live="polite">Nothing marked yet. The free square is on the house.</p>
     <div class="reward" id="reward" data-impeccable-ignore="hard-offset-shadow" hidden>
-      <p class="r-kicker">Bingo! Reward unlocked</p>
+      <p class="r-kicker">Bingo! Joke badge unlocked</p>
       <p class="r-title" id="r-title"></p>
       <p class="r-prize" id="r-prize"></p>
-      <p class="r-small">Rewards are jokes. There are no real prizes.</p>
+      <p class="r-small">Badges are jokes for your card image. There are no real prizes, payments or giveaways.</p>
     </div>
     <div class="actions">
       <button type="button" class="btn hot" id="save">Save card image</button>

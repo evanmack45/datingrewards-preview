@@ -50,7 +50,7 @@
     "A friend wrote the bio",
     "Hiking boots in every photo",
     "Strong opinion about tacos",
-    "Matched at 2\u00a0AM",
+    "Matched at 2 AM",
     "Daily “gm” texts, then gone",
     "Self-described adventurer",
     "Costume party photo",
@@ -66,22 +66,22 @@
     {
       "lines": 1,
       "title": "Bronze Swiper",
-      "prize": "One guilt-free evening with the app deleted."
+      "prize": "Suggested treat: one evening with the app deleted."
     },
     {
       "lines": 2,
       "title": "Silver Swiper",
-      "prize": "A friend has to listen to the whole story. No phones out."
+      "prize": "Suggested treat: a friend listens to the whole story, phones away."
     },
     {
       "lines": 3,
       "title": "Gold Swiper",
-      "prize": "The right to say “I’ve seen it all” at brunch."
+      "prize": "Bragging rights at brunch: “I’ve seen it all.”"
     },
     {
       "lines": 12,
       "title": "Blackout",
-      "prize": "Lifetime membership in the Seen It All Club. Dues waived."
+      "prize": "Honorary title in the Seen It All Club. It is only a title."
     }
   ]
 }

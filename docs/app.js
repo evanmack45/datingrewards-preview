@@ -134,7 +134,7 @@ async function drawCard() {
     g.font = '500 30px Figtree'; const c = closest(marks); g.fillText(`${c.need} more in the ${lineName(c.line)} for bingo.`, 60, by + 46);
   }
   g.font = '500 24px Figtree'; g.fillStyle = 'rgba(255,246,230,.85)';
-  g.fillText(`Joke game, generic tropes, no real people. ${location.host}${location.pathname}#${encode(seed, marks)}`, 60, H - 40);
+  g.fillText(`Joke badge, no real prize. Generic tropes, no real people. ${location.host}${location.pathname}#${encode(seed, marks)}`, 60, H - 40);
   return new Promise((res) => cv.toBlob(res, 'image/png'));
 }
 $('#save').addEventListener('click', async () => {
