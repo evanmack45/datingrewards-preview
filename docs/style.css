@@ -22,11 +22,24 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px soli
 
 .play { max-width: 1180px; margin: 0 auto; padding: 0 12px 40px; display: grid; gap: 20px; }
 .intro { padding: 0 4px; }
+.stage { display: grid; gap: 16px; min-width: 0; }
+.hero { display: block; line-height: 0; }
+.hero-art {
+  display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: contain;
+  border: 3px solid var(--ink); border-radius: 18px; box-shadow: 7px 7px 0 var(--ink); background: var(--paper);
+}
 h1 { font: 400 clamp(44px, 12.5vw, 112px)/.92 var(--display); margin: 6px 0 26px; color: var(--paper); text-shadow: 4px 4px 0 var(--pink); letter-spacing: -.01em; }
 .lede { margin: 0; font-size: 18px; max-width: 30em; }
 
 .card { position: relative; background: var(--paper); color: var(--ink); border: 3px solid var(--ink); border-radius: 18px; box-shadow: 7px 7px 0 var(--ink); overflow: hidden; }
-.letters { position: relative; display: grid; grid-template-columns: repeat(5, 1fr); background: var(--band); border-bottom: 3px solid var(--ink); padding: 8px 10px; }
+.letters { position: relative; z-index: 2; display: grid; grid-template-columns: repeat(5, 1fr); background: var(--band); border-bottom: 3px solid var(--ink); padding: 8px 10px; }
+.tier-badge {
+  position: absolute; left: 4px; top: 50%; transform: translateY(-50%);
+  height: 88%; width: auto; aspect-ratio: 1 / 1; max-height: 68px; object-fit: contain;
+  z-index: 4; pointer-events: none; visibility: hidden;
+}
+.card.has-bingo .tier-badge { visibility: visible; }
+.card.has-bingo .stamp { padding-left: 80px; }
 .letters span { text-align: center; font: 400 clamp(26px, 8vw, 52px)/1.1 var(--display); color: var(--paper); }
 .cells { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); margin: clamp(7px, 2.4vw, 10px); border: 2px solid var(--ink); }
 .cell {
@@ -38,9 +51,9 @@ h1 { font: 400 clamp(44px, 12.5vw, 112px)/.92 var(--display); margin: 6px 0 26px
 }
 .cell:nth-child(5n) { border-right: 0; }
 .cell:nth-last-child(-n + 5) { border-bottom: 0; }
-.cell .tx { position: relative; z-index: 1; }
+.cell .tx { position: relative; z-index: 2; }
 .cell::before {
-  content: ""; position: absolute; z-index: 0; left: 50%; top: 50%; width: 82%; aspect-ratio: 1; border-radius: 50%;
+  content: ""; position: absolute; z-index: 1; left: 50%; top: 50%; width: 82%; aspect-ratio: 1; border-radius: 50%;
   background: radial-gradient(circle at 42% 38%, rgba(255,61,127,.48), rgba(255,61,127,.62) 62%, rgba(214,24,92,.7));
   transform: translate(calc(-50% + var(--dx, 0%)), calc(-50% + var(--dy, 0%))) rotate(var(--rot, 0deg)) scale(0);
   transition: transform .28s cubic-bezier(.2, .9, .25, 1);
@@ -51,7 +64,11 @@ h1 { font: 400 clamp(44px, 12.5vw, 112px)/.92 var(--display); margin: 6px 0 26px
 .cell.is-win { background-color: var(--yellow); }
 .cell.is-win:hover { background-color: var(--yellow); }
 .cell.free { cursor: default; }
-.free .ft { position: relative; z-index: 1; font: 400 clamp(15px, 4.4vw, 24px)/1 var(--display); color: var(--ink); }
+.free-ticket {
+  position: absolute; inset: 4%; width: 92%; height: 92%; object-fit: contain;
+  z-index: 0; opacity: 0.42; mix-blend-mode: multiply; pointer-events: none;
+}
+.free .ft { position: relative; z-index: 2; font: 400 clamp(15px, 4.4vw, 24px)/1 var(--display); color: var(--ink); }
 .free .tx { font-size: clamp(12px, 3vw, 14px); line-height: 1.1; }
 
 .stamp { position: absolute; inset: 0; z-index: 3; margin: 0; display: grid; place-items: center; font: 400 clamp(22px, 6.4vw, 44px)/1 var(--display); letter-spacing: .04em; color: var(--ink); background: var(--yellow); visibility: hidden; clip-path: inset(0 100% 0 0); transition: clip-path .35s cubic-bezier(.2, .9, .25, 1), visibility 0s .35s; pointer-events: none; padding: 0 10px; text-align: center; }
@@ -85,10 +102,13 @@ h1 { font: 400 clamp(44px, 12.5vw, 112px)/.92 var(--display); margin: 6px 0 26px
 .confetti { position: fixed; inset: 0; pointer-events: none; z-index: 10; }
 
 @media (min-width: 960px) {
-  .play { grid-template-columns: minmax(0, 1fr) minmax(540px, 620px); grid-template-areas: "intro card" "side card"; column-gap: 56px; row-gap: 26px; padding-top: 18px; align-items: start; }
+  .play { grid-template-columns: minmax(0, 1fr) minmax(540px, 620px); grid-template-areas: "intro stage" "side stage"; column-gap: 56px; row-gap: 26px; padding-top: 18px; align-items: start; }
   .intro { grid-area: intro; padding-top: 30px; }
-  .card { grid-area: card; }
+  .stage { grid-area: stage; }
+  .hero-art { aspect-ratio: 16 / 9; }
   .side { grid-area: side; }
+  .tier-badge { max-height: 86px; }
+  .card.has-bingo .stamp { padding-left: 100px; }
   .lede { font-size: 20px; }
   .play { grid-template-columns: minmax(0, 1fr) minmax(500px, 560px); }
   .cell { font-size: 15px; padding: 8px; aspect-ratio: 1 / .86; }

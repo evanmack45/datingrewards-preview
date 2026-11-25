@@ -39,6 +39,14 @@ function render({ celebrate = false } = {}) {
   $('#stamp').textContent = r ? r.title : 'Bingo!';
   $('#save').textContent = r ? `Save your ${r.title}` : 'Save card image';
   $('#card').classList.toggle('has-bingo', k > 0);
+  const tb = $('#tier-badge');
+  if (r && BADGE[r.title]) {
+    tb.hidden = false;
+    if (tb.getAttribute('src') !== BADGE[r.title]) tb.src = BADGE[r.title];
+  } else {
+    tb.hidden = true;
+    tb.removeAttribute('src');
+  }
   if (celebrate && k > lastLines) confetti();
   lastLines = k;
   history.replaceState(null, '', `#${encode(seed, marks)}`);
@@ -88,12 +96,16 @@ function confetti() {
 
 // ---------- card image ----------
 const C = { blue: '#1f3fd0', paper: '#fff6e6', ink: '#1b1035', pink: '#ff3d7f', yellow: '#ffd23f', mute: '#5b4d6b' };
+const BADGE = { 'Bronze Swiper': 'img/badge-bronze-400.webp', 'Silver Swiper': 'img/badge-silver-400.webp', 'Gold Swiper': 'img/badge-gold-400.webp' };
+const BADGE_HI = { 'Bronze Swiper': 'img/badge-bronze.webp', 'Silver Swiper': 'img/badge-silver.webp', 'Gold Swiper': 'img/badge-gold.webp' };
+const imgCache = {};
+const loadImg = (src) => imgCache[src] ||= new Promise((ok, no) => { const i = new Image(); i.onload = () => ok(i); i.onerror = () => { delete imgCache[src]; no(new Error(src)); }; i.src = src; });
 function wrap(g, text, maxW) {
   const words = text.split(' '), lines = []; let cur = '';
   for (const w of words) { const t = cur ? `${cur} ${w}` : w; if (g.measureText(t).width > maxW && cur) { lines.push(cur); cur = w; } else cur = t; }
   if (cur) lines.push(cur); return lines;
 }
-function paintGrid(g, order, marks, win, x0, top, cw, ch, hd) {
+function paintGrid(g, order, marks, win, x0, top, cw, ch, hd, ticket) {
   const cardW = cw * 5, cardH = hd + ch * 5;
   g.fillStyle = C.ink; g.beginPath(); g.roundRect(x0 + 12, top + 12, cardW, cardH, 28); g.fill();
   g.fillStyle = C.paper; g.beginPath(); g.roundRect(x0, top, cardW, cardH, 28); g.fill();
@@ -105,6 +117,7 @@ function paintGrid(g, order, marks, win, x0, top, cw, ch, hd) {
   for (let p = 0; p < CELLS; p++) {
     const cx = x0 + (p % 5) * cw, cy = top + hd + Math.floor(p / 5) * ch;
     if (win.has(p)) { g.fillStyle = C.yellow; g.fillRect(cx, cy, cw, ch); }
+    if (p === FREE && ticket) { g.save(); g.globalAlpha = 0.32; g.drawImage(ticket, cx + 6, cy + 6, cw - 12, ch - 12); g.restore(); }
     if (isMarked(marks, p)) {
       const h = (seed ^ (p * 2654435761)) >>> 0;
       g.fillStyle = 'rgba(255,61,127,.55)'; g.beginPath(); g.arc(cx + cw / 2 + (((h >>> 8) % 9) - 4) * 1.6, cy + ch / 2 + (((h >>> 16) % 9) - 4) * 1.4, daub, 0, 7); g.fill();
@@ -124,24 +137,30 @@ function paintGrid(g, order, marks, win, x0, top, cw, ch, hd) {
 }
 async function drawCard() {
   await Promise.all([document.fonts.load('140px "Bagel Fat One"'), document.fonts.load('88px "Bagel Fat One"'), document.fonts.load('500 32px Figtree')]);
+  const ticket = await loadImg('img/ticket.webp').catch(() => null);
   const W = 1080, H = 1350, cv = document.createElement('canvas'); cv.width = W; cv.height = H;
   const g = cv.getContext('2d'), order = deal(seed, data.pool.length), lines = doneLines(marks), win = new Set(lines.flat());
   const n = countMarked(marks) - 1, r = reward(data.rewards, n === CELLS - 1 ? 12 : lines.length);
+  const badgeIm = (r && BADGE_HI[r.title]) ? await loadImg(BADGE_HI[r.title]).catch(() => null) : null;
   g.fillStyle = C.blue; g.fillRect(0, 0, W, H);
   g.fillStyle = 'rgba(255,255,255,.07)'; for (let y = 12; y < H; y += 28) for (let x = (y / 28) % 2 ? 26 : 12; x < W; x += 28) { g.beginPath(); g.arc(x, y, 3, 0, 7); g.fill(); }
   g.textBaseline = 'alphabetic';
   if (r) {
+    const badgeSize = 360, badgeX = W - 36 - badgeSize, badgeY = 36, textMax = (badgeIm ? badgeX - 24 : 972);
+    if (badgeIm) g.drawImage(badgeIm, badgeX, badgeY, badgeSize, badgeSize);
     g.textAlign = 'left';
     g.font = '44px "Bagel Fat One"'; g.fillStyle = C.pink; g.fillText('Dating App Bingo', 58, 86); g.fillStyle = C.paper; g.fillText('Dating App Bingo', 54, 82);
     g.font = '140px "Bagel Fat One"'; g.fillStyle = C.pink; g.fillText('Bingo!', 58, 228); g.fillStyle = C.paper; g.fillText('Bingo!', 50, 220);
-    g.font = '88px "Bagel Fat One"'; g.fillStyle = C.yellow; g.fillText(r.title, 54, 318);
+    g.font = '88px "Bagel Fat One"'; g.fillStyle = C.yellow;
+    let y = 318;
+    wrap(g, r.title, textMax).forEach((l) => { g.fillText(l, 54, y); y += 90; });
     g.font = '500 32px Figtree'; g.fillStyle = C.paper;
-    let y = 372;
-    wrap(g, r.prize, 972).slice(0, 2).forEach((l) => { g.fillText(l, 54, y); y += 40; });
-    paintGrid(g, order, marks, win, 90, y + 16, 180, 148, 84);
+    y = Math.max(y + 8, 372);
+    wrap(g, r.prize, textMax).slice(0, 2).forEach((l) => { g.fillText(l, 54, y); y += 40; });
+    paintGrid(g, order, marks, win, 90, y + 16, 176, 140, 80, ticket);
   } else {
     g.font = '92px "Bagel Fat One"'; g.fillStyle = C.pink; g.fillText('Dating App Bingo', 64, 150); g.fillStyle = C.paper; g.fillText('Dating App Bingo', 58, 144);
-    const cardH = paintGrid(g, order, marks, win, 60, 190, 192, 170, 96);
+    const cardH = paintGrid(g, order, marks, win, 60, 190, 192, 170, 96, ticket);
     g.textAlign = 'left';
     g.font = '44px "Bagel Fat One"'; g.fillStyle = C.paper; g.fillText(`${n} of 24 marked`, 60, 190 + cardH + 78);
     g.font = '500 30px Figtree'; const c = closest(marks); g.fillText(`${c.need} more in the ${lineName(c.line)} for bingo.`, 60, 190 + cardH + 124);

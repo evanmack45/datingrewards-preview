@@ -22,7 +22,7 @@ const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replac
 const order = deal(DEFAULT_SEED, data.pool.length);
 const cellText = (p) => (p === FREE ? data.free : data.pool[order[p < FREE ? p : p - 1]]);
 const cells = [...Array(CELLS).keys()].map((p) => p === FREE
-  ? `<button type="button" class="cell free is-on" data-i="${p}" aria-pressed="true" disabled><span class="ft">Free</span><span class="tx">${esc(cellText(p))}</span></button>`
+  ? `<button type="button" class="cell free is-on" data-i="${p}" aria-pressed="true" disabled><img class="free-ticket" src="img/ticket.webp" width="400" height="400" alt="" decoding="async" loading="lazy"><span class="ft">Free</span><span class="tx">${esc(cellText(p))}</span></button>`
   : `<button type="button" class="cell" data-i="${p}" aria-pressed="false"><span class="tx">${esc(cellText(p))}</span></button>`).join('\n      ');
 
 const html = `<!doctype html>
@@ -43,6 +43,8 @@ const html = `<!doctype html>
 <meta name="theme-color" content="#1f3fd0">
 <link rel="preload" href="fonts/bagel.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/figtree.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" as="image" type="image/webp" href="img/hero-phone-800.webp" imagesrcset="img/hero-phone-640.webp 640w, img/hero-phone-800.webp 800w, img/hero-phone-960.webp 960w, img/hero-phone-1200.webp 1200w" imagesizes="(min-width: 960px) 560px, calc(100vw - 24px)" media="(max-width: 959px)" fetchpriority="high">
+<link rel="preload" as="image" type="image/webp" href="img/hero-1280.webp" imagesrcset="img/hero-960.webp 960w, img/hero-1280.webp 1280w, img/hero-1600.webp 1600w" imagesizes="(min-width: 960px) 560px, calc(100vw - 24px)" media="(min-width: 960px)">
 <link rel="stylesheet" href="style.css">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%23ff3d7f'/%3E%3C/svg%3E">
 </head>
@@ -56,11 +58,17 @@ const html = `<!doctype html>
     <h1>Dating App Bingo</h1>
     <p class="lede">Tap every square that has happened to you on the apps. Five in a row earns a joke badge for your card. It is never a real prize.</p>
   </div>
+  <div class="stage">
+  <picture class="hero">
+    <source media="(max-width: 959px)" type="image/webp" srcset="img/hero-phone-640.webp 640w, img/hero-phone-800.webp 800w, img/hero-phone-960.webp 960w, img/hero-phone-1200.webp 1200w" sizes="(min-width: 960px) 560px, calc(100vw - 24px)" width="1200" height="900">
+    <img class="hero-art" src="img/hero-1280.webp" srcset="img/hero-960.webp 960w, img/hero-1280.webp 1280w, img/hero-1600.webp 1600w" sizes="(min-width: 960px) 560px, calc(100vw - 24px)" width="1600" height="900" alt="A retro carnival prize booth whose prizes are dating-app clichés: a fish, a tiger, a summit flag." fetchpriority="high" decoding="async">
+  </picture>
   <div class="card" id="card" data-impeccable-ignore="hard-offset-shadow">
-    <div class="letters" aria-hidden="true"><span>S</span><span>W</span><span>I</span><span>P</span><span>E</span><p class="stamp" id="stamp">Bingo!</p></div>
+    <div class="letters" aria-hidden="true"><span>S</span><span>W</span><span>I</span><span>P</span><span>E</span><img class="tier-badge" id="tier-badge" width="160" height="160" alt="" decoding="async"><p class="stamp" id="stamp">Bingo!</p></div>
     <div class="cells" id="cells" role="group" aria-label="Bingo card, 25 squares">
       ${cells}
     </div>
+  </div>
   </div>
   <div class="side">
     <p class="status" id="status" aria-live="polite">Nothing marked yet. The free square is on the house.</p>
