@@ -113,6 +113,7 @@ function wrap(g, text, maxW) {
 }
 function paintGrid(g, order, marks, win, x0, top, cw, ch, hd, ticket) {
   const cardW = cw * 5, cardH = hd + ch * 5;
+  lastLayout.boxes.push({ x: x0, y: top, w: cardW, h: cardH, shadow: 12 });
   g.fillStyle = C.ink; g.beginPath(); g.roundRect(x0 + 12, top + 12, cardW, cardH, 28); g.fill();
   g.fillStyle = C.paper; g.beginPath(); g.roundRect(x0, top, cardW, cardH, 28); g.fill();
   g.save(); g.beginPath(); g.roundRect(x0, top, cardW, cardH, 28); g.clip();
@@ -142,6 +143,7 @@ function paintGrid(g, order, marks, win, x0, top, cw, ch, hd, ticket) {
   return cardH;
 }
 async function drawCard() {
+  lastLayout = { boxes: [], texts: [] };
   await Promise.all([document.fonts.load('140px "Bagel Fat One"'), document.fonts.load('88px "Bagel Fat One"'), document.fonts.load('500 32px Figtree')]);
   const ticket = await loadImg('img/ticket.webp').catch(() => null);
   const W = 1080, H = 1350, cv = document.createElement('canvas'); cv.width = W; cv.height = H;
@@ -166,7 +168,17 @@ async function drawCard() {
     g.font = '500 32px Figtree'; g.fillStyle = C.paper;
     y = Math.max(y + 8, 372);
     wrap(g, r.prize, plate ? 972 : textMax).slice(0, 2).forEach((l) => { g.fillText(l, 54, y); y += 40; });
-    paintGrid(g, order, marks, win, 90, y + 16, 176, 140, 80, ticket);
+    // The 880x780 board at a fixed size used to run into the footer after a
+    // Bronze bingo (grid+shadow ended at 1304, "Joke badge..." started at 1271).
+    const gridTop = y + 16, shadow = 12, footerKeep = H - 96;
+    let cw = 176, ch = 140, hd = 80;
+    const natH = hd + ch * 5, maxH = footerKeep - shadow - gridTop;
+    if (natH > maxH) {
+      const sc = maxH / natH;
+      cw = Math.floor(cw * sc); ch = Math.floor(ch * sc); hd = Math.floor(hd * sc);
+    }
+    const x0 = Math.round((W - cw * 5) / 2);
+    paintGrid(g, order, marks, win, x0, gridTop, cw, ch, hd, ticket);
   } else {
     g.font = '92px "Bagel Fat One"'; g.fillStyle = C.pink; g.fillText('Dating App Bingo', 64, 150); g.fillStyle = C.paper; g.fillText('Dating App Bingo', 58, 144);
     const cardH = paintGrid(g, order, marks, win, 60, 190, 192, 170, 96, ticket);
@@ -176,10 +188,17 @@ async function drawCard() {
   }
   g.textAlign = 'left';
   g.font = '500 22px Figtree'; g.fillStyle = 'rgba(255,246,230,.85)';
-  g.fillText('Joke badge, no real prize. Generic tropes, no real people.', 54, H - 64);
-  wrap(g, publicFooter('#' + encode(seed, marks)), W - 108).forEach((l, i) => g.fillText(l, 54, H - 36 + i * 26));
+  const rec = (s, x, y) => {
+    const m = g.measureText(s);
+    const t = { s, x, y, w: m.width, top: y - (m.actualBoundingBoxAscent || 0), bottom: y + (m.actualBoundingBoxDescent || 0) };
+    lastLayout.texts.push(t);
+    g.fillText(s, x, y);
+  };
+  rec('Joke badge, no real prize. Generic tropes, no real people.', 54, H - 64);
+  wrap(g, publicFooter('#' + encode(seed, marks)), W - 108).forEach((l, i) => rec(l, 54, H - 36 + i * 26));
   return new Promise((res) => cv.toBlob(res, 'image/png'));
 }
+let lastLayout = { boxes: [], texts: [] };
 $('#save').addEventListener('click', async () => {
   const blob = await drawCard();
   const n = countMarked(marks) - 1, r = reward(data.rewards, n === CELLS - 1 ? 12 : doneLines(marks).length);
@@ -191,5 +210,6 @@ $('#save').addEventListener('click', async () => {
   setTimeout(() => URL.revokeObjectURL(a.href), 4000); say('Card image saved.');
 });
 window.__card = drawCard;
+window.__cardLayout = async () => { await drawCard(); return lastLayout; };
 
 load();
