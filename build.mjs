@@ -53,7 +53,7 @@ const html = `<!doctype html>
     <h1>Dating App Bingo</h1>
     <p class="lede">Tap every square that has happened to you on the apps. Five in a row wins a reward.</p>
   </div>
-  <div class="card" id="card">
+  <div class="card" id="card" data-impeccable-ignore="hard-offset-shadow">
     <div class="letters" aria-hidden="true"><span>S</span><span>W</span><span>I</span><span>P</span><span>E</span><p class="stamp" id="stamp">Bingo!</p></div>
     <div class="cells" id="cells" role="group" aria-label="Bingo card, 25 squares">
       ${cells}
@@ -61,7 +61,7 @@ const html = `<!doctype html>
   </div>
   <div class="side">
     <p class="status" id="status" aria-live="polite">Tap every square that has happened to you.</p>
-    <div class="reward" id="reward" hidden>
+    <div class="reward" id="reward" data-impeccable-ignore="hard-offset-shadow" hidden>
       <p class="r-kicker">Bingo! Reward unlocked</p>
       <p class="r-title" id="r-title"></p>
       <p class="r-prize" id="r-prize"></p>
