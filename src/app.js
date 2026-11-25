@@ -172,8 +172,9 @@ async function drawCard() {
     g.font = '500 30px Figtree'; const c = closest(marks); g.fillText(`${c.need} more in the ${lineName(c.line)} for bingo.`, 60, 190 + cardH + 124);
   }
   g.textAlign = 'left';
-  g.font = '500 24px Figtree'; g.fillStyle = 'rgba(255,246,230,.85)';
-  g.fillText(`Joke badge, no real prize. Generic tropes, no real people. ${publicFooter('#' + encode(seed, marks))}`, 54, H - 40);
+  g.font = '500 22px Figtree'; g.fillStyle = 'rgba(255,246,230,.85)';
+  g.fillText('Joke badge, no real prize. Generic tropes, no real people.', 54, H - 64);
+  wrap(g, publicFooter('#' + encode(seed, marks)), W - 108).forEach((l, i) => g.fillText(l, 54, H - 36 + i * 26));
   return new Promise((res) => cv.toBlob(res, 'image/png'));
 }
 $('#save').addEventListener('click', async () => {
