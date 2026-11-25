@@ -10,7 +10,10 @@ A how-it-works strip (1024×341, srcset 512/1024, lazy) sits under `#about-h` an
 
 - Local e2e (qa/e2e.mjs): **ALL PASS (127)**, including the strip dimensions and lazy srcset on the no-JS about section.
 - Local gate (qa/local-r4/): Lighthouse **99 / 100 / 100 / SEO 66**, CLS 0.001, LCP 2.2 s. Impeccable findings match r3: 1 at 390 and 1280 (advisory hard-offset shadow on the hero, intentional), 2 static (that shadow plus a pre-existing img with no src on a JS-filled badge). Folds viewed; the strip lives in How it works, below the first screen.
-- Live e2e / live folds: pending Pages. noindex kept; no DNS or go-live.
+- Live on dff906d.
+- Live e2e (qa/art-folds/r4/e2e-live.log): **ALL PASS (127)**.
+- Live gate (qa/art-folds/r4/gate-live/): Lighthouse **100 / 100 / 100 / SEO 63**, CLS 0.001, LCP 1.5 s. Impeccable findings unchanged from r3 (hero hard-shadow advisory).
+- Live captures (viewed): qa/art-folds/r4/live-how-it-works-{390,1280}.png. noindex kept; no DNS or go-live.
 
 ## Share footer canonical URL, 2026-11-25 8:20 AM CT
 
