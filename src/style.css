@@ -54,7 +54,7 @@ h1 { font: 400 clamp(44px, 12.5vw, 112px)/.92 var(--display); margin: 6px 0 26px
 .free .ft { position: relative; z-index: 1; font: 400 clamp(15px, 4.4vw, 24px)/1 var(--display); color: var(--ink); }
 .free .tx { font-size: clamp(12px, 3vw, 14px); line-height: 1.1; }
 
-.stamp { position: absolute; inset: 0; z-index: 3; margin: 0; display: grid; place-items: center; font: 400 clamp(26px, 8vw, 52px)/1 var(--display); letter-spacing: .08em; color: var(--ink); background: var(--yellow); visibility: hidden; clip-path: inset(0 100% 0 0); transition: clip-path .35s cubic-bezier(.2, .9, .25, 1), visibility 0s .35s; pointer-events: none; }
+.stamp { position: absolute; inset: 0; z-index: 3; margin: 0; display: grid; place-items: center; font: 400 clamp(22px, 6.4vw, 44px)/1 var(--display); letter-spacing: .04em; color: var(--ink); background: var(--yellow); visibility: hidden; clip-path: inset(0 100% 0 0); transition: clip-path .35s cubic-bezier(.2, .9, .25, 1), visibility 0s .35s; pointer-events: none; padding: 0 10px; text-align: center; }
 .card.has-bingo .stamp { visibility: visible; clip-path: inset(0 0 0 0); transition: clip-path .35s cubic-bezier(.2, .9, .25, 1); }
 .card.has-bingo .letters span { visibility: hidden; }
 .side { display: grid; gap: 14px; align-content: start; }
@@ -98,13 +98,3 @@ h1 { font: 400 clamp(44px, 12.5vw, 112px)/.92 var(--display); margin: 6px 0 26px
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
-
-/* === generated art === */
-.intro { display: grid; gap: 16px; }
-.intro-art { width: 100%; height: auto; max-height: 220px; object-fit: cover; object-position: center 40%; display: block; }
-.trophies { display: block; width: min(480px, 100%); height: auto; margin: 0 0 16px; }
-@media (min-width: 960px) {
-  .intro { grid-template-columns: 1fr; }
-  .intro-art { max-height: 280px; }
-}
-
