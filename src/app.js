@@ -102,8 +102,8 @@ function confetti() {
 
 // ---------- card image ----------
 const C = { blue: '#1f3fd0', paper: '#fff6e6', ink: '#1b1035', pink: '#ff3d7f', yellow: '#ffd23f', mute: '#5b4d6b' };
-const BADGE = { 'Bronze Swiper': 'img/badge-bronze-400.webp', 'Silver Swiper': 'img/badge-silver-400.webp', 'Gold Swiper': 'img/badge-gold-400.webp' };
-const BADGE_HI = { 'Bronze Swiper': 'img/badge-bronze.webp', 'Silver Swiper': 'img/badge-silver.webp', 'Gold Swiper': 'img/badge-gold.webp' };
+const BADGE = { 'Bronze Swiper': 'img/badge-bronze-400.webp', 'Silver Swiper': 'img/badge-silver-400.webp', 'Gold Swiper': 'img/badge-gold-400.webp', 'Blackout': 'img/badge-blackout-400.webp' };
+const BADGE_HI = { 'Bronze Swiper': 'img/badge-bronze.webp', 'Silver Swiper': 'img/badge-silver.webp', 'Gold Swiper': 'img/badge-gold.webp', 'Blackout': 'img/badge-blackout.webp' };
 const imgCache = {};
 const loadImg = (src) => imgCache[src] ||= new Promise((ok, no) => { const i = new Image(); i.onload = () => ok(i); i.onerror = () => { delete imgCache[src]; no(new Error(src)); }; i.src = src; });
 function wrap(g, text, maxW) {
@@ -152,7 +152,10 @@ async function drawCard() {
   g.fillStyle = 'rgba(255,255,255,.07)'; for (let y = 12; y < H; y += 28) for (let x = (y / 28) % 2 ? 26 : 12; x < W; x += 28) { g.beginPath(); g.arc(x, y, 3, 0, 7); g.fill(); }
   g.textBaseline = 'alphabetic';
   if (r) {
-    const badgeSize = 360, badgeX = W - 36 - badgeSize, badgeY = 36, textMax = (badgeIm ? badgeX - 24 : 972);
+    // Blackout's rosette is blue and green, so it sits on a cream plate. The metal medals sit straight on the blue.
+    const plate = badgeIm && r.title === 'Blackout';
+    const badgeSize = plate ? 316 : 360, badgeX = W - 36 - badgeSize - (plate ? 12 : 0), badgeY = 36 + (plate ? 12 : 0), textMax = (badgeIm ? badgeX - (plate ? 40 : 24) : 972);
+    if (plate) { g.fillStyle = C.paper; g.beginPath(); g.roundRect(badgeX - 12, badgeY - 12, badgeSize + 24, badgeSize + 24, 36); g.fill(); g.strokeStyle = C.ink; g.lineWidth = 5; g.stroke(); }
     if (badgeIm) g.drawImage(badgeIm, badgeX, badgeY, badgeSize, badgeSize);
     g.textAlign = 'left';
     g.font = '44px "Bagel Fat One"'; g.fillStyle = C.pink; g.fillText('Dating App Bingo', 58, 86); g.fillStyle = C.paper; g.fillText('Dating App Bingo', 54, 82);
@@ -162,7 +165,7 @@ async function drawCard() {
     wrap(g, r.title, textMax).forEach((l) => { g.fillText(l, 54, y); y += 90; });
     g.font = '500 32px Figtree'; g.fillStyle = C.paper;
     y = Math.max(y + 8, 372);
-    wrap(g, r.prize, textMax).slice(0, 2).forEach((l) => { g.fillText(l, 54, y); y += 40; });
+    wrap(g, r.prize, plate ? 972 : textMax).slice(0, 2).forEach((l) => { g.fillText(l, 54, y); y += 40; });
     paintGrid(g, order, marks, win, 90, y + 16, 176, 140, 80, ticket);
   } else {
     g.font = '92px "Bagel Fat One"'; g.fillStyle = C.pink; g.fillText('Dating App Bingo', 64, 150); g.fillStyle = C.paper; g.fillText('Dating App Bingo', 58, 144);
