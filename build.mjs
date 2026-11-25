@@ -6,7 +6,7 @@ import { deal, FREE, CELLS, withFree } from './src/logic.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const out = join(here, 'docs');
-const SITE = 'https://evanmack45.github.io/datingrewards-preview/';
+const SITE = 'https://datingrewards.com/';
 const AFTERNIC = 'https://www.afternic.com/domain/datingrewards.com';
 const DEFAULT_SEED = 20261125;
 const data = JSON.parse(readFileSync(join(here, 'data/squares.json'), 'utf8'));
@@ -30,7 +30,8 @@ const html = `<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="noindex,nofollow">
+<link rel="canonical" href="${SITE}">
+<meta property="og:url" content="${SITE}">
 <title>Dating App Bingo</title>
 <meta name="description" content="A fresh bingo card of dating-app clichés. Tap what has happened to you, get five in a row, save the card.">
 <meta property="og:title" content="Dating App Bingo">
@@ -116,6 +117,8 @@ mkdirSync(join(out, 'img'), { recursive: true });
 for (const f of readdirSync(join(here, 'src/img'))) copyFileSync(join(here, 'src/img', f), join(out, 'img', f));
 copyFileSync(join(here, 'src/img/og.jpg'), join(out, 'og.jpg'));
 for (const f of readdirSync(join(here, 'src/fonts'))) copyFileSync(join(here, 'src/fonts', f), join(out, 'fonts', f));
-writeFileSync(join(out, 'robots.txt'), 'User-agent: *\nDisallow: /\n');
+writeFileSync(join(out, 'robots.txt'), `User-agent: *\nAllow: /\nSitemap: ${SITE}sitemap.xml\n`);
+writeFileSync(join(out, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>${SITE}</loc></url></urlset>\n`);
+writeFileSync(join(out, 'CNAME'), 'datingrewards.com\n');
 writeFileSync(join(out, '.nojekyll'), '');
 console.log(`built ${out}: ${data.pool.length} squares, default seed ${DEFAULT_SEED}, free square marked ${withFree(0) === 1 << FREE}`);

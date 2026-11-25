@@ -9,7 +9,7 @@ let seed = Number($('#play').dataset.seed), marks = withFree(0), lastLines = 0;
 const randomSeed = () => { const a = new Uint32Array(1); do crypto.getRandomValues(a); while (a[0] < 1 || a[0] > MAX_SEED); return a[0]; };
 const textAt = (order, p) => (p === FREE ? data.free : data.pool[order[p < FREE ? p : p - 1]]);
 // Switch to https://datingrewards.com/ at go-live.
-const CANONICAL = 'https://evanmack45.github.io/datingrewards-preview/';
+const CANONICAL = 'https://datingrewards.com/';
 const isLocalPage = () => location.protocol === 'file:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1';
 const publicPage = () => (isLocalPage() ? CANONICAL : `${location.origin}${location.pathname}`).replace(/index\.html$/, '').replace(/\/?$/, '/');
 const publicLink = (hash) => `${publicPage()}${hash.startsWith('#') ? hash : '#' + hash}`;
