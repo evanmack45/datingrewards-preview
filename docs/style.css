@@ -127,3 +127,23 @@ h1 { font: 400 clamp(44px, 12.5vw, 112px)/.92 var(--display); margin: 6px 0 26px
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+
+/* Printable card page (Compass SEO, 11/25) */
+.print-page { max-width: none; }
+.print-main { max-width: 720px; margin: 0 auto; padding: 8px 20px 40px; }
+.print-main h1 { font-size: clamp(36px, 9vw, 64px); margin-bottom: 14px; }
+.print-actions { margin: 0 0 16px; }
+.print-card { max-width: 640px; }
+.print-note { margin: 16px 0; font-size: 15px; }
+@media print {
+  @page { size: letter; margin: 0.45in; }
+  html, body { background: #fff !important; color: #111; }
+  .no-print { display: none !important; }
+  .print-main { padding: 0; max-width: none; }
+  .print-main h1 { font-size: 28px; margin: 0 0 8px; text-shadow: none; color: #111; }
+  .print-main .lede { font-size: 13px; margin: 0 0 10px; }
+  .print-note { font-size: 12px; margin: 8px 0 0; }
+  .print-card { box-shadow: none; max-width: 7.4in; margin: 0 auto; break-inside: avoid; }
+  .print-card .letters span { font-size: 28px; }
+  .print-card .cell { padding: 6px 4px; font-size: 12px; aspect-ratio: 1 / 0.72; }
+}

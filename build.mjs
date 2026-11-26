@@ -25,6 +25,10 @@ const cells = [...Array(CELLS).keys()].map((p) => p === FREE
   ? `<button type="button" class="cell free is-on" data-i="${p}" aria-pressed="true" disabled><img class="free-ticket" src="img/ticket.webp" width="400" height="400" alt="" decoding="async" loading="lazy"><span class="ft">Free</span><span class="tx">${esc(cellText(p))}</span></button>`
   : `<button type="button" class="cell" data-i="${p}" aria-pressed="false"><span class="tx">${esc(cellText(p))}</span></button>`).join('\n      ');
 
+const APP_LD = { '@context': 'https://schema.org', '@type': 'WebApplication', name: 'Dating App Bingo', url: SITE, description: 'A fresh bingo card of dating-app clichés. Tap what has happened to you, get five in a row, save the card.', applicationCategory: 'EntertainmentApplication', operatingSystem: 'Any', browserRequirements: 'Requires JavaScript', isAccessibleForFree: true, offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' } };
+const ldTag = `<script type="application/ld+json">${JSON.stringify(APP_LD).replace(/</g, '\\u003c')}</script>`;
+const PRINT = `${SITE}dating-app-bingo-printable/`;
+
 const html = `<!doctype html>
 <html lang="en">
 <head>
@@ -47,6 +51,7 @@ const html = `<!doctype html>
 <link rel="preload" as="image" type="image/webp" href="img/hero-phone-800.webp" imagesrcset="img/hero-phone-640.webp 640w, img/hero-phone-800.webp 800w, img/hero-phone-960.webp 960w, img/hero-phone-1200.webp 1200w" imagesizes="(min-width: 960px) 560px, calc(100vw - 24px)" media="(max-width: 959px)" fetchpriority="high">
 <link rel="preload" as="image" type="image/webp" href="img/hero-1280.webp" imagesrcset="img/hero-960.webp 960w, img/hero-1280.webp 1280w, img/hero-1600.webp 1600w" imagesizes="(min-width: 960px) 560px, calc(100vw - 24px)" media="(min-width: 960px)">
 <link rel="stylesheet" href="style.css">
+${ldTag}
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%23ff3d7f'/%3E%3C/svg%3E">
 </head>
 <body>
@@ -90,6 +95,7 @@ const html = `<!doctype html>
 </main>
 <section class="about" id="about" aria-labelledby="about-h">
   <h2 id="about-h">How it works</h2>
+  <p class="print-link"><a href="dating-app-bingo-printable/">Print a card</a> that fits on one page.</p>
   <figure class="how-art"><img src="img/how-it-works-512.webp" srcset="img/how-it-works-512.webp 512w, img/how-it-works.webp 1024w" sizes="(min-width: 900px) 1024px, calc(100vw - 40px)" width="1024" height="341" loading="lazy" decoding="async" alt="A five-by-five board with a few marks, the same board with one row lit, and a blank-center rosette."></figure>
   <p>Every card is 24 squares picked at random from ${data.pool.length} generic dating-app clichés, plus a free square in the middle. Mark a full row, column or diagonal for bingo. Mark all 25 for a blackout.</p>
   <p>Nothing you tap leaves your browser. There are no accounts, cookies or trackers. Your marks live in this page and in the link, but only if you copy it and send it yourself. The link holds the card number and which squares are marked, nothing else.</p>
@@ -111,14 +117,69 @@ const html = `<!doctype html>
 
 rmSync(out, { recursive: true, force: true });
 mkdirSync(join(out, 'fonts'), { recursive: true });
+const printCells = [...Array(CELLS).keys()].map((p) => p === FREE
+  ? `<div class="cell free is-on" data-i="${p}"><img class="free-ticket" src="../img/ticket.webp" width="400" height="400" alt="" decoding="async"><span class="ft">Free</span><span class="tx">${esc(cellText(p))}</span></div>`
+  : `<div class="cell" data-i="${p}"><span class="tx">${esc(cellText(p))}</span></div>`).join('\n      ');
+const printAnswer = "Here is today's dating-app bingo card, ready to print. Mark every square that has happened to you. Five in a row is bingo. The badge is a joke, never a real prize. Play on the site if you would rather tap than print.";
+if (printAnswer.trim().split(/\s+/).length > 60) throw new Error("printable answer over 60 words");
+const PRINT_LD = { '@context': 'https://schema.org', '@type': 'WebPage', name: 'Dating app bingo you can print', url: PRINT, description: printAnswer, isPartOf: { '@type': 'WebSite', name: 'Dating Rewards', url: SITE } };
+const printHTML = `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="canonical" href="${PRINT}">
+<meta property="og:url" content="${PRINT}">
+<title>Dating app bingo you can print | Dating Rewards</title>
+<meta name="description" content="A one-page printable dating-app bingo card. Mark five in a row. The badge is a joke, never a real prize.">
+<meta property="og:title" content="Dating app bingo you can print">
+<meta property="og:description" content="A one-page card of dating-app clichés. Mark what has happened to you.">
+<meta property="og:image" content="${SITE}og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="../style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%23ff3d7f'/%3E%3C/svg%3E">
+<script type="application/ld+json">${JSON.stringify(PRINT_LD).replace(/</g, '\\u003c')}</script>
+</head>
+<body class="print-page">
+<header class="top no-print">
+  <a class="brand" href="../">Dating Rewards</a>
+  <a class="toplink" href="../">Play on the site</a>
+</header>
+<main class="print-main">
+  <h1>Dating app bingo you can print</h1>
+  <p class="lede" id="pr-answer">${printAnswer}</p>
+  <p class="no-print print-actions"><button type="button" class="btn hot" id="do-print">Print this page</button></p>
+  <div class="card print-card" id="card">
+    <div class="letters" aria-hidden="true"><span>S</span><span>W</span><span>I</span><span>P</span><span>E</span></div>
+    <div class="cells" id="cells" aria-label="Bingo card, 25 squares">
+      ${printCells}
+    </div>
+  </div>
+  <p class="print-note">The middle square is free. This is a joke game for adults, 18+, and is not linked to any dating app.</p>
+  <p class="no-print"><a class="btn" href="../">Play on the site</a></p>
+</main>
+<footer class="foot no-print">
+  <p>Dating Rewards is a joke game for adults, 18+. Not linked to any dating app.</p>
+  <p><a href="${AFTERNIC}">This domain is for sale.</a></p>
+</footer>
+<script>
+document.getElementById('do-print')?.addEventListener('click', () => window.print());
+</script>
+</body>
+</html>`;
+
 writeFileSync(join(out, 'index.html'), html);
+mkdirSync(join(out, 'dating-app-bingo-printable'), { recursive: true });
+writeFileSync(join(out, 'dating-app-bingo-printable/index.html'), printHTML);
 for (const f of ['style.css', 'app.js', 'logic.js']) copyFileSync(join(here, 'src', f), join(out, f));
 mkdirSync(join(out, 'img'), { recursive: true });
 for (const f of readdirSync(join(here, 'src/img'))) copyFileSync(join(here, 'src/img', f), join(out, 'img', f));
 copyFileSync(join(here, 'src/img/og.jpg'), join(out, 'og.jpg'));
 for (const f of readdirSync(join(here, 'src/fonts'))) copyFileSync(join(here, 'src/fonts', f), join(out, 'fonts', f));
 writeFileSync(join(out, 'robots.txt'), `User-agent: *\nAllow: /\nSitemap: ${SITE}sitemap.xml\n`);
-writeFileSync(join(out, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>${SITE}</loc></url></urlset>\n`);
+writeFileSync(join(out, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>${SITE}</loc></url><url><loc>${PRINT}</loc></url></urlset>\n`);
 writeFileSync(join(out, 'CNAME'), 'datingrewards.com\n');
 writeFileSync(join(out, '.nojekyll'), '');
 console.log(`built ${out}: ${data.pool.length} squares, default seed ${DEFAULT_SEED}, free square marked ${withFree(0) === 1 << FREE}`);
