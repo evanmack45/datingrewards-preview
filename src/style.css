@@ -103,6 +103,13 @@ h1 { font: 400 clamp(44px, 12.5vw, 112px)/.92 var(--display); margin: 6px 0 26px
 .foot a { display: inline-block; padding: 8px 0; font-weight: 700; }
 .confetti { position: fixed; inset: 0; pointer-events: none; z-index: 10; }
 
+/* phone: the prize booth runs edge to edge and 340px tall so it fills 0.40 of the 390x844 first screen */
+@media (max-width: 599px) {
+  .top { padding-top: 8px; padding-bottom: 4px; }
+  .play { gap: 14px; }
+  .hero { margin: 0 -12px; }
+  .hero-art { height: 340px; aspect-ratio: auto; object-fit: cover; object-position: 0 50%; border-width: 3px 0; border-radius: 0; box-shadow: none; }
+}
 @media (min-width: 960px) {
   .play { grid-template-columns: minmax(0, 1fr) minmax(540px, 620px); grid-template-areas: "intro stage" "side stage"; column-gap: 56px; row-gap: 26px; padding-top: 18px; align-items: start; }
   .intro { grid-area: intro; padding-top: 30px; }

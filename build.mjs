@@ -61,7 +61,7 @@ const html = `<!doctype html>
   </div>
   <div class="stage">
   <picture class="hero">
-    <source media="(max-width: 959px)" type="image/webp" srcset="img/hero-phone-640.webp 640w, img/hero-phone-800.webp 800w, img/hero-phone-960.webp 960w, img/hero-phone-1200.webp 1200w" sizes="(min-width: 960px) 560px, calc(100vw - 24px)" width="1200" height="900">
+    <source media="(max-width: 959px)" type="image/webp" srcset="img/hero-phone-640.webp 640w, img/hero-phone-800.webp 800w, img/hero-phone-960.webp 960w, img/hero-phone-1200.webp 1200w" sizes="(min-width: 960px) 560px, (min-width: 600px) calc(100vw - 24px), 115vw" width="1200" height="900">
     <img class="hero-art" src="img/hero-1280.webp" srcset="img/hero-960.webp 960w, img/hero-1280.webp 1280w, img/hero-1600.webp 1600w" sizes="(min-width: 960px) 560px, calc(100vw - 24px)" width="1600" height="900" alt="A retro carnival prize booth whose prizes are dating-app clichés: a fish, a tiger, a summit flag." fetchpriority="high" decoding="async">
   </picture>
   <div class="card" id="card" data-impeccable-ignore="hard-offset-shadow">
